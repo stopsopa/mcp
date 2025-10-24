@@ -1,0 +1,1 @@
+mcp-stdio.ts downloaded from here: https://github.com/modelcontextprotocol/servers/blob/2025.9.25/src/filesystem/index.ts
