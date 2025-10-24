@@ -23,9 +23,6 @@ if (!proc || !proc.stdout || !proc.stderr) {
 
 // JSON-RPC request handler
 app.post('/jsonrpc', (req, res) => {
-  let responseHandler;
-  let listenerAdded = false;
-  
   try {
     const jsonRpcRequest = req.body;
 
@@ -33,15 +30,22 @@ app.post('/jsonrpc', (req, res) => {
     proc.stdin.write(JSON.stringify(jsonRpcRequest) + '\n');
 
     // Listen for response on stdout
-    responseHandler = (data) => {
+    const responseHandler = (data) => {
       try {
         const responseStr = data.toString().trim();
         const jsonRpcResponse = JSON.parse(responseStr);
+
+        // Remove the listener after receiving response
+        proc.stdout.removeListener('data', responseHandler);
 
         // Send the response back to the client
         res.json(jsonRpcResponse);
       } catch (parseError) {
         console.error('Error parsing response:', parseError);
+
+        // Remove the listener on error too
+        proc.stdout.removeListener('data', responseHandler);
+
         res.status(500).json({
           error: 'Failed to parse server response',
           details: parseError.message
@@ -50,18 +54,12 @@ app.post('/jsonrpc', (req, res) => {
     };
 
     proc.stdout.on('data', responseHandler);
-    listenerAdded = true;
   } catch (error) {
     console.error('Error handling JSON-RPC request:', error);
     res.status(500).json({
       error: 'Failed to process request',
       details: error.message
     });
-  } finally {
-    // Always remove the listener if it was added
-    if (responseHandler && listenerAdded) {
-      proc.stdout.removeListener('data', responseHandler);
-    }
   }
 });
 

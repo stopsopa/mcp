@@ -1,53 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>MCP JSON-RPC Client</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
-        textarea { width: 100%; height: 200px; }
-        #response { background: #f4f4f4; border: 1px solid #ddd; padding: 10px; white-space: pre-wrap; }
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <script
+      type="module"
+      src="https://stopsopa.github.io/ace-editor-webcomponent/ace-web-component.js"
+      data-main-ace="https://cdnjs.cloudflare.com/ajax/libs/ace/1.43.3/ace.min.js"
+    ></script>
     <h1>MCP JSON-RPC Request Builder</h1>
 
     <h2>Request</h2>
-    <textarea id="request" placeholder='Enter JSON-RPC request (e.g., {
-    "jsonrpc": "2.0",
-    "method": "some_method",
-    "params": {},
-    "id": 1
-})'></textarea>
+    <p>
+      examples: <button id="initialize">initialize</button>
+      <button id="tools/list">tools/list</button>
+    </p>
+    <ace-editor lang="json" id="request">
+      <script type="ace">
+        Enter JSON-RPC request (e.g., {
+            "jsonrpc": "2.0",
+            "method": "some_method",
+            "params": {},
+            "id": 1
+        })
+      </script>
+    </ace-editor>
 
     <button onclick="sendRequest()">Send Request</button>
 
     <h2>Response</h2>
-    <div id="response">Response will appear here</div>
+
+    <ace-editor lang="json" id="response">
+      <script type="ace">
+        Response will appear here
+      </script>
+    </ace-editor>
 
     <script>
-        async function sendRequest() {
-            const requestTextArea = document.getElementById('request');
-            const responseDiv = document.getElementById('response');
+      const requestAce = document.getElementById("request");
+      const responseAce = document.getElementById("response");
 
-            try {
-                // Validate JSON first
-                const jsonRpcRequest = JSON.parse(requestTextArea.value);
+      const requestReady = new Promise((resolve) => {
+        requestAce.addEventListener("onLoad", () => {
+          resolve();
+        });
+      });
 
-                const response = await fetch('/jsonrpc', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: requestTextArea.value
-                });
+      const responseReady = new Promise((resolve) => {
+        responseAce.addEventListener("onLoad", () => {
+          resolve();
+        });
+      });
 
-                const jsonResponse = await response.json();
-                responseDiv.textContent = JSON.stringify(jsonResponse, null, 2);
-            } catch (error) {
-                responseDiv.textContent = `Error: ${error.message}`;
-            }
+      async function sendRequest() {
+        await requestReady;
+        await responseReady;
+
+        try {
+          // Validate JSON first
+          const jsonRpcRequest = JSON.parse(requestAce.value);
+
+          const response = await fetch("/jsonrpc", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: requestAce.value,
+          });
+
+          const jsonResponse = await response.json();
+          responseAce.value = JSON.stringify(jsonResponse, null, 2);
+        } catch (error) {
+          responseAce.value = `Error: ${error.message}`;
         }
+      }
+
+      function bind(buttonId, jsonRpcRequest) {
+        document.getElementById(buttonId).onclick = async () => {
+          await requestReady;
+          requestAce.value = JSON.stringify(jsonRpcRequest, null, 2);
+        };
+      }
+
+      bind("initialize", {
+        jsonrpc: "2.0",
+        id: 1,
+        method: "initialize",
+        params: {
+          protocolVersion: "1.0",
+          capabilities: {
+            supportsTools: true,
+            supportsResources: true,
+          },
+          clientInfo: {
+            name: "Claude",
+            version: "1.0",
+            capabilities: {
+              supportsTools: true,
+              supportsResources: true,
+            },
+          },
+        },
+      });
+
+      bind("tools/list", {
+        jsonrpc: "2.0",
+        id: 2,
+        method: "tools/list",
+        params: {},
+      });
     </script>
-</body>
+  </body>
 </html>
