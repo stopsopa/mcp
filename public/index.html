@@ -4,11 +4,115 @@
     <meta charset="UTF-8" />
     <title>MCP JSON-RPC Client</title>
     <style>
+      * {
+        box-sizing: border-box;
+      }
+
       body {
         font-family: Arial, sans-serif;
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      h1 {
+        margin: 0;
+        padding: 15px 20px;
+        background: #2c3e50;
+        color: white;
+        font-size: 1.5em;
+      }
+
+      .container {
+        display: flex;
+        height: calc(100vh - 60px);
+      }
+
+      .left-panel {
+        flex: 1;
+        min-width: 0;
+        border-right: 2px solid #ccc;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .right-panel {
+        flex: 2;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .panel-content {
+        padding: 15px;
+        overflow-y: auto;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      h2 {
+        margin: 0 0 15px 0;
+        font-size: 1.2em;
+        color: #2c3e50;
+      }
+
+      p {
+        margin: 8px 0;
+      }
+
+      button {
+        margin: 2px;
+        padding: 5px 10px;
+        cursor: pointer;
+        border: 1px solid #3498db;
+        background: #3498db;
+        color: white;
+        border-radius: 3px;
+        font-size: 0.85em;
+      }
+
+      button:hover {
+        background: #2980b9;
+      }
+
+      #sendButton {
+        margin: 10px 0;
+        padding: 10px 20px;
+        background: #27ae60;
+        border: none;
+        font-size: 1em;
+        font-weight: bold;
+      }
+
+      #sendButton:hover {
+        background: #229954;
+      }
+
+
+      #mediaContainer {
+        margin-top: 15px;
+      }
+
+      #imageDisplay {
+        max-width: 100%;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+
+      #audioDisplay {
+        width: 100%;
+        margin: 10px 0;
+      }
+
+      #mediaInfo {
+        padding: 10px;
+        background: #f4f4f4;
+        border: 1px solid #ddd;
+        border-radius: 4px;
       }
     </style>
   </head>
@@ -18,56 +122,89 @@
       src="https://stopsopa.github.io/ace-editor-webcomponent/ace-web-component.js"
       data-main-ace="https://cdnjs.cloudflare.com/ajax/libs/ace/1.43.3/ace.min.js"
     ></script>
+
     <h1>MCP JSON-RPC Request Builder</h1>
 
-    <h2>Request</h2>
-    <p>
-      <strong>Protocol:</strong>
-      <button id="initialize">initialize</button>
-      <button id="tools/list">tools/list</button>
-    </p>
-    <p>
-      <strong>File Operations:</strong>
-      <button id="read_text_file">read_text_file</button>
-      <button id="read_media_file">read_media_file</button>
-      <button id="read_multiple_files">read_multiple_files</button>
-      <button id="write_file">write_file</button>
-      <button id="edit_file">edit_file</button>
-    </p>
-    <p>
-      <strong>Directory Operations:</strong>
-      <button id="create_directory">create_directory</button>
-      <button id="list_directory">list_directory</button>
-      <button id="list_directory_with_sizes">list_directory_with_sizes</button>
-      <button id="directory_tree">directory_tree</button>
-    </p>
-    <p>
-      <strong>Other Operations:</strong>
-      <button id="move_file">move_file</button>
-      <button id="search_files">search_files</button>
-      <button id="get_file_info">get_file_info</button>
-      <button id="list_allowed_directories">list_allowed_directories</button>
-    </p>
-    <ace-editor lang="json" id="request">
-      <script type="ace">
-        Enter JSON-RPC request (e.g., {
-            "jsonrpc": "2.0",
-            "method": "some_method",
-            "params": {},
-            "id": 1
-        })
-      </script>
-    </ace-editor>
+    <div class="container">
+      <!-- Left Panel: Request -->
+      <div class="left-panel">
+        <div class="panel-content">
+          <h2>Request</h2>
 
-    <button onclick="sendRequest()">Send Request</button>
+          <p>
+            <strong>Protocol:</strong>
+            <button id="initialize">initialize</button>
+            <button id="tools/list">tools/list</button>
+          </p>
 
-    <h2>Response</h2>
+          <p>
+            <strong>File Operations:</strong>
+            <button id="read_text_file">read_text_file</button>
+            <button id="read_media_file">read_media_file</button>
+            <button id="read_multiple_files">read_multiple_files</button>
+            <button id="write_file">write_file</button>
+            <button id="edit_file">edit_file</button>
+          </p>
 
-    <ace-editor lang="json" id="response">
-      <script type="ace">
-        Response will appear here
-      </script>
-    </ace-editor>
+          <p>
+            <strong>Directory Operations:</strong>
+            <button id="create_directory">create_directory</button>
+            <button id="list_directory">list_directory</button>
+            <button id="list_directory_with_sizes">list_directory_with_sizes</button>
+            <button id="directory_tree">directory_tree</button>
+          </p>
+
+          <p>
+            <strong>Other Operations:</strong>
+            <button id="move_file">move_file</button>
+            <button id="search_files">search_files</button>
+            <button id="get_file_info">get_file_info</button>
+            <button id="list_allowed_directories">list_allowed_directories</button>
+          </p>
+
+          <ace-editor lang="json" id="request">
+            <script type="ace">
+              Enter JSON-RPC request (e.g., {
+                  "jsonrpc": "2.0",
+                  "method": "some_method",
+                  "params": {},
+                  "id": 1
+              })
+            </script>
+          </ace-editor>
+
+          <button id="sendButton" onclick="sendRequest()">Send Request</button>
+        </div>
+      </div>
+
+      <!-- Right Panel: Response -->
+      <div class="right-panel">
+        <div class="panel-content">
+          <h2>Response</h2>
+
+          <ace-editor lang="json" id="response">
+            <script type="ace">
+              Response will appear here
+            </script>
+          </ace-editor>
+
+          <!-- Media display container -->
+          <div id="mediaContainer" style="display: none;">
+            <!-- Image display -->
+            <img id="imageDisplay" style="display: none;" />
+
+            <!-- Audio display -->
+            <audio id="audioDisplay" controls style="display: none;"></audio>
+
+            <!-- Other media info -->
+            <div id="mediaInfo" style="display: none;">
+              <p><strong>Content-Type:</strong> <span id="mimeType"></span></p>
+              <p><strong>Size:</strong> <span id="dataSize"></span> bytes</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <script>
       const requestAce = document.getElementById("request");
@@ -89,6 +226,17 @@
         await requestReady;
         await responseReady;
 
+        // Hide media container and all media elements
+        const mediaContainer = document.getElementById("mediaContainer");
+        const imageDisplay = document.getElementById("imageDisplay");
+        const audioDisplay = document.getElementById("audioDisplay");
+        const mediaInfo = document.getElementById("mediaInfo");
+
+        mediaContainer.style.display = "none";
+        imageDisplay.style.display = "none";
+        audioDisplay.style.display = "none";
+        mediaInfo.style.display = "none";
+
         try {
           // Validate JSON first
           const jsonRpcRequest = JSON.parse(requestAce.value);
@@ -101,8 +249,52 @@
             body: requestAce.value,
           });
 
-          const jsonResponse = await response.json();
-          responseAce.value = JSON.stringify(jsonResponse, null, 2);
+          const contentType = response.headers.get("Content-Type");
+
+          // Check if response is JSON
+          if (contentType && contentType.includes("application/json")) {
+            const jsonResponse = await response.json();
+            responseAce.value = JSON.stringify(jsonResponse, null, 2);
+          }
+          // Check if response is an image
+          else if (contentType && contentType.startsWith("image/")) {
+            const blob = await response.blob();
+            const imageUrl = URL.createObjectURL(blob);
+
+            // Show image for supported formats
+            if (contentType.match(/image\/(png|jpeg|jpg|gif|bmp|webp)/)) {
+              imageDisplay.src = imageUrl;
+              imageDisplay.style.display = "block";
+              mediaContainer.style.display = "block";
+              responseAce.value = `Image received (${contentType}, ${blob.size} bytes)`;
+            } else {
+              // For other image types, show info
+              document.getElementById("mimeType").textContent = contentType;
+              document.getElementById("dataSize").textContent = blob.size;
+              mediaInfo.style.display = "block";
+              mediaContainer.style.display = "block";
+              responseAce.value = `Media received: ${contentType} (${blob.size} bytes)`;
+            }
+          }
+          // Check if response is audio
+          else if (contentType && contentType.startsWith("audio/")) {
+            const blob = await response.blob();
+            const audioUrl = URL.createObjectURL(blob);
+
+            audioDisplay.src = audioUrl;
+            audioDisplay.style.display = "block";
+            mediaContainer.style.display = "block";
+            responseAce.value = `Audio received (${contentType}, ${blob.size} bytes)`;
+          }
+          // Other binary types
+          else {
+            const blob = await response.blob();
+            document.getElementById("mimeType").textContent = contentType || "unknown";
+            document.getElementById("dataSize").textContent = blob.size;
+            mediaInfo.style.display = "block";
+            mediaContainer.style.display = "block";
+            responseAce.value = `Binary data received: ${contentType || "unknown"} (${blob.size} bytes)`;
+          }
         } catch (error) {
           responseAce.value = `Error: ${error.message}`;
         }
@@ -220,7 +412,7 @@
         params: {
           name: "create_directory",
           arguments: {
-            path: "./new_directory"
+            path: "./files/new_directory"
           }
         }
       });
@@ -257,7 +449,7 @@
         params: {
           name: "directory_tree",
           arguments: {
-            path: "."
+            path: "./files"
           }
         }
       });
@@ -270,8 +462,8 @@
         params: {
           name: "move_file",
           arguments: {
-            source: "./old_name.txt",
-            destination: "./new_name.txt"
+            source: "./files/test.txt",
+            destination: "./files/test.txt.bak"
           }
         }
       });

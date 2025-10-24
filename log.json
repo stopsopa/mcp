@@ -16,3 +16,35 @@
 {"method":"tools/call","params":{"name":"write_file","arguments":{"path":"./files/test.txt","content":"Hello, World!"}}}
 {"method":"tools/call","params":{"name":"edit_file","arguments":{"path":"./files/test.txt","edits":[{"oldText":"Hello","newText":"Hi"}],"dryRun":false}}}
 {"method":"tools/call","params":{"name":"read_media_file","arguments":{"path":"./files/img.jpeg"}}}
+{"method":"tools/call","params":{"name":"read_media_file","arguments":{"path":"./files/img.jpeg"}}}
+{"method":"tools/call","params":{"name":"read_text_file","arguments":{"path":"./README.md"}}}
+{"method":"tools/call","params":{"name":"write_file","arguments":{"path":"./files/test.txt","content":"Hello, World!"}}}
+{"method":"tools/call","params":{"name":"edit_file","arguments":{"path":"./files/test.txt","edits":[{"oldText":"Hello","newText":"Hi"}],"dryRun":false}}}
+{"method":"tools/call","params":{"name":"read_media_file","arguments":{"path":"./files/img.jpg"}}}
+{"method":"tools/call","params":{"name":"read_media_file","arguments":{"path":"./files/img.jpg"}}}
+{"method":"tools/call","params":{"name":"write_file","arguments":{"path":"./files/test.txt","content":"Hello, World!"}}}
+{"method":"tools/call","params":{"name":"edit_file","arguments":{"path":"./files/test.txt","edits":[{"oldText":"Hello","newText":"Hi"}],"dryRun":false}}}
+{"method":"tools/call","params":{"name":"read_text_file","arguments":{"path":"./README.md"}}}
+{"method":"tools/call","params":{"name":"read_media_file","arguments":{"path":"./files/img.jpg"}}}
+{"method":"tools/call","params":{"name":"read_multiple_files","arguments":{"paths":["./link.sh","./package.json"]}}}
+{"method":"tools/call","params":{"name":"write_file","arguments":{"path":"./files/test.txt","content":"Hello, World!"}}}
+{"method":"tools/call","params":{"name":"edit_file","arguments":{"path":"./files/test.txt","edits":[{"oldText":"Hello","newText":"Hi"}],"dryRun":false}}}
+{"method":"tools/call","params":{"name":"create_directory","arguments":{"path":"./new_directory"}}}
+{"method":"tools/call","params":{"name":"list_directory","arguments":{"path":"."}}}
+{"method":"tools/call","params":{"name":"create_directory","arguments":{"path":"./files/new_directory"}}}
+{"method":"tools/call","params":{"name":"create_directory","arguments":{"path":"./files/new_directory"}}}
+{"method":"tools/call","params":{"name":"create_directory","arguments":{"path":"./files/new_directory"}}}
+{"method":"tools/call","params":{"name":"list_directory","arguments":{"path":"."}}}
+{"method":"tools/call","params":{"name":"list_directory","arguments":{"path":"."}}}
+{"method":"tools/call","params":{"name":"list_directory_with_sizes","arguments":{"path":".","sortBy":"size"}}}
+{"method":"tools/call","params":{"name":"directory_tree","arguments":{"path":"."}}}
+{"method":"tools/call","params":{"name":"directory_tree","arguments":{"path":"./files"}}}
+{"method":"tools/call","params":{"name":"move_file","arguments":{"source":"./files/test.txt","destination":"./files/test.txt.bak"}}}
+{"method":"tools/call","params":{"name":"search_files","arguments":{"path":".","pattern":"*.json","excludePatterns":["node_modules"]}}}
+{"method":"tools/call","params":{"name":"search_files","arguments":{"path":".","pattern":"*.json","excludePatterns":["node_modules"]}}}
+{"method":"tools/call","params":{"name":"search_files","arguments":{"path":".","pattern":"*.json","excludePatterns":["node_modules"]}}}
+{"method":"tools/call","params":{"name":"search_files","arguments":{"path":".","pattern":"*.json","excludePatterns":["node_modules"]}}}
+{"method":"tools/call","params":{"name":"search_files","arguments":{"path":".","pattern":"*.json","excludePatterns":["node_modules"]}}}
+{"method":"tools/call","params":{"name":"get_file_info","arguments":{"path":"./README.md"}}}
+{"method":"tools/call","params":{"name":"search_files","arguments":{"path":".","pattern":"*.json","excludePatterns":["node_modules"]}}}
+{"method":"tools/call","params":{"name":"list_allowed_directories","arguments":{}}}

@@ -29,19 +29,60 @@ app.post('/jsonrpc', (req, res) => {
     // Write the JSON-RPC request to the process stdin
     proc.stdin.write(JSON.stringify(jsonRpcRequest) + '\n');
 
+    // Buffer to accumulate response data across multiple chunks
+    let buffer = '';
+
     // Listen for response on stdout
     const responseHandler = (data) => {
       try {
-        const responseStr = data.toString().trim();
-        const jsonRpcResponse = JSON.parse(responseStr);
+        // Accumulate data in buffer
+        buffer += data.toString();
+
+        // Check if we have a complete JSON message (ends with newline)
+        const newlineIndex = buffer.indexOf('\n');
+        if (newlineIndex === -1) {
+          // Message not complete yet, wait for more data
+          return;
+        }
+
+        // Extract the complete JSON message
+        const completeMessage = buffer.substring(0, newlineIndex).trim();
+
+        // Parse the complete JSON response
+        const jsonRpcResponse = JSON.parse(completeMessage);
 
         // Remove the listener after receiving response
         proc.stdout.removeListener('data', responseHandler);
 
-        // Send the response back to the client
+        // Check if response contains media data (base64-encoded image/audio)
+        if (jsonRpcResponse.result &&
+            jsonRpcResponse.result.content &&
+            Array.isArray(jsonRpcResponse.result.content) &&
+            jsonRpcResponse.result.content.length > 0) {
+
+          const content = jsonRpcResponse.result.content[0];
+
+          // If it has 'data' and 'mimeType', it's media content
+          if (content.data && content.mimeType) {
+            // Decode base64 to binary
+            const binaryData = Buffer.from(content.data, 'base64');
+
+            // Set proper Content-Type header
+            res.setHeader('Content-Type', content.mimeType);
+            res.setHeader('Content-Length', binaryData.length);
+
+            // Send binary data
+            res.send(binaryData);
+            return;
+          }
+        }
+
+        // For all other responses, send as JSON
         res.json(jsonRpcResponse);
       } catch (parseError) {
         console.error('Error parsing response:', parseError);
+        console.error('Buffer content length:', buffer.length);
+        console.error('Buffer preview:', buffer.substring(0, 200));
 
         // Remove the listener on error too
         proc.stdout.removeListener('data', responseHandler);
