@@ -3,7 +3,7 @@ import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { CallToolRequestSchema, ListToolsRequestSchema, ToolSchema, RootsListChangedNotificationSchema, } from "@modelcontextprotocol/sdk/types.js";
 import fs from "fs/promises";
-import { createReadStream } from "fs";
+import { createReadStream, appendFileSync } from "fs";
 import path from "path";
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
@@ -252,6 +252,14 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
     };
 });
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
+    // Log the incoming request to log.json
+    try {
+        const logEntry = JSON.stringify(request) + '\n';
+        appendFileSync(path.join(process.cwd(), 'log.json'), logEntry);
+    } catch (logError) {
+        console.error('Error logging request:', logError);
+    }
+
     try {
         const { name, arguments: args } = request.params;
         switch (name) {
