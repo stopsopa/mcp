@@ -1,0 +1,18 @@
+{"method":"tools/call","params":{"name":"read_text_file","arguments":{"path":"./README.md"}}}
+{"method":"tools/call","params":{"name":"read_media_file","arguments":{"path":"./image.png"}}}
+{"method":"tools/call","params":{"name":"read_multiple_files","arguments":{"paths":["./link.sh","./package.json"]}}}
+{"method":"tools/call","params":{"name":"read_multiple_files","arguments":{"paths":["./link.sh","./files/img.jpeg"]}}}
+{"method":"tools/call","params":{"name":"read_multiple_files","arguments":{"paths":["./link.sh","./files/img.jpeg"]}}}
+{"method":"tools/call","params":{"name":"read_multiple_files","arguments":{"paths":["./link.sh","./files/img.jpeg"]}}}
+{"method":"tools/call","params":{"name":"read_multiple_files","arguments":{"paths":["./link.sh","./package.json"]}}}
+{"method":"tools/call","params":{"name":"read_media_file","arguments":{"path":"./files/img.jpeg"}}}
+{"method":"tools/call","params":{"name":"write_file","arguments":{"path":"./test.txt","content":"Hello, World!"}}}
+{"method":"tools/call","params":{"name":"write_file","arguments":{"path":"./files/test.txt","content":"Hello, World!"}}}
+{"method":"tools/call","params":{"name":"edit_file","arguments":{"path":"./files/test.txt","edits":[{"oldText":"Hello","newText":"Hi"}],"dryRun":false}}}
+{"method":"tools/call","params":{"name":"read_multiple_files","arguments":{"paths":["./link.sh","./package.json"]}}}
+{"method":"tools/call","params":{"name":"write_file","arguments":{"path":"./files/test.txt","content":"Hello, World!"}}}
+{"method":"tools/call","params":{"name":"edit_file","arguments":{"path":"./files/test.txt","edits":[{"oldText":"Hello","newText":"Hi"}],"dryRun":false}}}
+{"method":"tools/call","params":{"name":"edit_file","arguments":{"path":"./files/test.txt","edits":[{"oldText":"Hello","newText":"Hi"}],"dryRun":false}}}
+{"method":"tools/call","params":{"name":"write_file","arguments":{"path":"./files/test.txt","content":"Hello, World!"}}}
+{"method":"tools/call","params":{"name":"edit_file","arguments":{"path":"./files/test.txt","edits":[{"oldText":"Hello","newText":"Hi"}],"dryRun":false}}}
+{"method":"tools/call","params":{"name":"read_media_file","arguments":{"path":"./files/img.jpeg"}}}

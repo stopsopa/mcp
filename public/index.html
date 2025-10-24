@@ -22,8 +22,31 @@
 
     <h2>Request</h2>
     <p>
-      examples: <button id="initialize">initialize</button>
+      <strong>Protocol:</strong>
+      <button id="initialize">initialize</button>
       <button id="tools/list">tools/list</button>
+    </p>
+    <p>
+      <strong>File Operations:</strong>
+      <button id="read_text_file">read_text_file</button>
+      <button id="read_media_file">read_media_file</button>
+      <button id="read_multiple_files">read_multiple_files</button>
+      <button id="write_file">write_file</button>
+      <button id="edit_file">edit_file</button>
+    </p>
+    <p>
+      <strong>Directory Operations:</strong>
+      <button id="create_directory">create_directory</button>
+      <button id="list_directory">list_directory</button>
+      <button id="list_directory_with_sizes">list_directory_with_sizes</button>
+      <button id="directory_tree">directory_tree</button>
+    </p>
+    <p>
+      <strong>Other Operations:</strong>
+      <button id="move_file">move_file</button>
+      <button id="search_files">search_files</button>
+      <button id="get_file_info">get_file_info</button>
+      <button id="list_allowed_directories">list_allowed_directories</button>
     </p>
     <ace-editor lang="json" id="request">
       <script type="ace">
@@ -118,6 +141,175 @@
         id: 2,
         method: "tools/list",
         params: {},
+      });
+
+      // File Operations
+      bind("read_text_file", {
+        jsonrpc: "2.0",
+        id: 3,
+        method: "tools/call",
+        params: {
+          name: "read_text_file",
+          arguments: {
+            path: "./README.md"
+          }
+        }
+      });
+
+      bind("read_media_file", {
+        jsonrpc: "2.0",
+        id: 4,
+        method: "tools/call",
+        params: {
+          name: "read_media_file",
+          arguments: {
+            path: "./files/img.jpg"
+          }
+        }
+      });
+
+      bind("read_multiple_files", {
+        jsonrpc: "2.0",
+        id: 5,
+        method: "tools/call",
+        params: {
+          name: "read_multiple_files",
+          arguments: {
+            paths: ["./link.sh", "./package.json"]
+          }
+        }
+      });
+
+      bind("write_file", {
+        jsonrpc: "2.0",
+        id: 6,
+        method: "tools/call",
+        params: {
+          name: "write_file",
+          arguments: {
+            path: "./files/test.txt",
+            content: "Hello, World!"
+          }
+        }
+      });
+
+      bind("edit_file", {
+        jsonrpc: "2.0",
+        id: 7,
+        method: "tools/call",
+        params: {
+          name: "edit_file",
+          arguments: {
+            path: "./files/test.txt",
+            edits: [
+              {
+                oldText: "Hello",
+                newText: "Hi"
+              }
+            ],
+            dryRun: false
+          }
+        }
+      });
+
+      // Directory Operations
+      bind("create_directory", {
+        jsonrpc: "2.0",
+        id: 8,
+        method: "tools/call",
+        params: {
+          name: "create_directory",
+          arguments: {
+            path: "./new_directory"
+          }
+        }
+      });
+
+      bind("list_directory", {
+        jsonrpc: "2.0",
+        id: 9,
+        method: "tools/call",
+        params: {
+          name: "list_directory",
+          arguments: {
+            path: "."
+          }
+        }
+      });
+
+      bind("list_directory_with_sizes", {
+        jsonrpc: "2.0",
+        id: 10,
+        method: "tools/call",
+        params: {
+          name: "list_directory_with_sizes",
+          arguments: {
+            path: ".",
+            sortBy: "size"
+          }
+        }
+      });
+
+      bind("directory_tree", {
+        jsonrpc: "2.0",
+        id: 11,
+        method: "tools/call",
+        params: {
+          name: "directory_tree",
+          arguments: {
+            path: "."
+          }
+        }
+      });
+
+      // Other Operations
+      bind("move_file", {
+        jsonrpc: "2.0",
+        id: 12,
+        method: "tools/call",
+        params: {
+          name: "move_file",
+          arguments: {
+            source: "./old_name.txt",
+            destination: "./new_name.txt"
+          }
+        }
+      });
+
+      bind("search_files", {
+        jsonrpc: "2.0",
+        id: 13,
+        method: "tools/call",
+        params: {
+          name: "search_files",
+          arguments: {
+            path: ".",
+            pattern: "*.json",
+            excludePatterns: ["node_modules"]
+          }
+        }
+      });
+
+      bind("get_file_info", {
+        jsonrpc: "2.0",
+        id: 14,
+        method: "tools/call",
+        params: {
+          name: "get_file_info",
+          arguments: {
+            path: "./README.md"
+          }
+        }
+      });
+
+      bind("list_allowed_directories", {
+        jsonrpc: "2.0",
+        id: 15,
+        method: "tools/call",
+        params: {
+          name: "list_allowed_directories",
+          arguments: {}
+        }
       });
     </script>
   </body>
