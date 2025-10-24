@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node mcp-client.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "ln": "/bin/bash link.sh"
   },
   "keywords": [],
   "author": "",
