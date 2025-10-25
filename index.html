@@ -92,7 +92,6 @@
         background: #229954;
       }
 
-
       #mediaContainer {
         margin-top: 15px;
       }
@@ -150,7 +149,9 @@
             <strong>Directory Operations:</strong>
             <button id="create_directory">create_directory</button>
             <button id="list_directory">list_directory</button>
-            <button id="list_directory_with_sizes">list_directory_with_sizes</button>
+            <button id="list_directory_with_sizes">
+              list_directory_with_sizes
+            </button>
             <button id="directory_tree">directory_tree</button>
           </p>
 
@@ -159,7 +160,9 @@
             <button id="move_file">move_file</button>
             <button id="search_files">search_files</button>
             <button id="get_file_info">get_file_info</button>
-            <button id="list_allowed_directories">list_allowed_directories</button>
+            <button id="list_allowed_directories">
+              list_allowed_directories
+            </button>
           </p>
 
           <ace-editor lang="json" id="request">
@@ -173,7 +176,7 @@
             </script>
           </ace-editor>
 
-          <button id="sendButton" onclick="sendRequest()">Send Request</button>
+          <button id="sendButton">Send Request</button>
         </div>
       </div>
 
@@ -181,23 +184,24 @@
       <div class="right-panel">
         <div class="panel-content">
           <h2>Response</h2>
+          <label> <input type="checkbox" id="format" checked /> format </label>
 
-          <ace-editor lang="json" id="response">
+          <ace-editor lang="python" id="response">
             <script type="ace">
               Response will appear here
             </script>
           </ace-editor>
 
           <!-- Media display container -->
-          <div id="mediaContainer" style="display: none;">
+          <div id="mediaContainer" style="display: none">
             <!-- Image display -->
-            <img id="imageDisplay" style="display: none;" />
+            <img id="imageDisplay" style="display: none" />
 
             <!-- Audio display -->
-            <audio id="audioDisplay" controls style="display: none;"></audio>
+            <audio id="audioDisplay" controls style="display: none"></audio>
 
             <!-- Other media info -->
-            <div id="mediaInfo" style="display: none;">
+            <div id="mediaInfo" style="display: none">
               <p><strong>Content-Type:</strong> <span id="mimeType"></span></p>
               <p><strong>Size:</strong> <span id="dataSize"></span> bytes</p>
             </div>
@@ -206,7 +210,9 @@
       </div>
     </div>
 
-    <script>
+    <script type="module">
+      import format from "./lib/format.js";
+
       const requestAce = document.getElementById("request");
       const responseAce = document.getElementById("response");
 
@@ -220,6 +226,14 @@
         responseAce.addEventListener("onLoad", () => {
           resolve();
         });
+      });
+
+      const formatElement = document.getElementById("format");
+      function shouldFormat() {
+        return formatElement.checked;
+      }
+      formatElement.addEventListener("change", (e) => {
+        sendRequest();
       });
 
       async function sendRequest() {
@@ -253,8 +267,15 @@
 
           // Check if response is JSON
           if (contentType && contentType.includes("application/json")) {
-            const jsonResponse = await response.json();
-            responseAce.value = JSON.stringify(jsonResponse, null, 2);
+            let jsonResponse = await response.json();
+
+            if (shouldFormat()) {
+              // jsonResponse = format(jsonResponse);
+              // debugger;
+              jsonResponse = jsonResponse;
+            }
+
+            responseAce.value = JSON.stringify(jsonResponse, null, 2).replace(/\\n/g, "\n");
           }
           // Check if response is an image
           else if (contentType && contentType.startsWith("image/")) {
@@ -289,16 +310,23 @@
           // Other binary types
           else {
             const blob = await response.blob();
-            document.getElementById("mimeType").textContent = contentType || "unknown";
+            document.getElementById("mimeType").textContent =
+              contentType || "unknown";
             document.getElementById("dataSize").textContent = blob.size;
             mediaInfo.style.display = "block";
             mediaContainer.style.display = "block";
-            responseAce.value = `Binary data received: ${contentType || "unknown"} (${blob.size} bytes)`;
+            responseAce.value = `Binary data received: ${
+              contentType || "unknown"
+            } (${blob.size} bytes)`;
           }
         } catch (error) {
           responseAce.value = `Error: ${error.message}`;
         }
       }
+
+      document
+        .querySelector("#sendButton")
+        .addEventListener("click", sendRequest);
 
       function bind(buttonId, jsonRpcRequest) {
         document.getElementById(buttonId).onclick = async () => {
@@ -343,9 +371,9 @@
         params: {
           name: "read_text_file",
           arguments: {
-            path: "./README.md"
-          }
-        }
+            path: "./README.md",
+          },
+        },
       });
 
       bind("read_media_file", {
@@ -355,9 +383,9 @@
         params: {
           name: "read_media_file",
           arguments: {
-            path: "./files/img.jpg"
-          }
-        }
+            path: "./files/img.jpg",
+          },
+        },
       });
 
       bind("read_multiple_files", {
@@ -367,9 +395,9 @@
         params: {
           name: "read_multiple_files",
           arguments: {
-            paths: ["./link.sh", "./package.json"]
-          }
-        }
+            paths: ["./link.sh", "./package.json"],
+          },
+        },
       });
 
       bind("write_file", {
@@ -380,9 +408,9 @@
           name: "write_file",
           arguments: {
             path: "./files/test.txt",
-            content: "Hello, World!"
-          }
-        }
+            content: "Hello, World!",
+          },
+        },
       });
 
       bind("edit_file", {
@@ -396,12 +424,12 @@
             edits: [
               {
                 oldText: "Hello",
-                newText: "Hi"
-              }
+                newText: "Hi",
+              },
             ],
-            dryRun: false
-          }
-        }
+            dryRun: false,
+          },
+        },
       });
 
       // Directory Operations
@@ -412,9 +440,9 @@
         params: {
           name: "create_directory",
           arguments: {
-            path: "./files/new_directory"
-          }
-        }
+            path: "./files/new_directory",
+          },
+        },
       });
 
       bind("list_directory", {
@@ -424,9 +452,9 @@
         params: {
           name: "list_directory",
           arguments: {
-            path: "."
-          }
-        }
+            path: ".",
+          },
+        },
       });
 
       bind("list_directory_with_sizes", {
@@ -437,9 +465,9 @@
           name: "list_directory_with_sizes",
           arguments: {
             path: ".",
-            sortBy: "size"
-          }
-        }
+            sortBy: "size",
+          },
+        },
       });
 
       bind("directory_tree", {
@@ -449,9 +477,9 @@
         params: {
           name: "directory_tree",
           arguments: {
-            path: "./files"
-          }
-        }
+            path: "./files",
+          },
+        },
       });
 
       // Other Operations
@@ -463,9 +491,9 @@
           name: "move_file",
           arguments: {
             source: "./files/test.txt",
-            destination: "./files/test.txt.bak"
-          }
-        }
+            destination: "./files/test.txt.bak",
+          },
+        },
       });
 
       bind("search_files", {
@@ -477,9 +505,9 @@
           arguments: {
             path: ".",
             pattern: "*.json",
-            excludePatterns: ["node_modules"]
-          }
-        }
+            excludePatterns: ["node_modules"],
+          },
+        },
       });
 
       bind("get_file_info", {
@@ -489,9 +517,9 @@
         params: {
           name: "get_file_info",
           arguments: {
-            path: "./README.md"
-          }
-        }
+            path: "./README.md",
+          },
+        },
       });
 
       bind("list_allowed_directories", {
@@ -500,8 +528,8 @@
         method: "tools/call",
         params: {
           name: "list_allowed_directories",
-          arguments: {}
-        }
+          arguments: {},
+        },
       });
     </script>
   </body>
