@@ -275,7 +275,10 @@
               jsonResponse = jsonResponse;
             }
 
-            responseAce.value = JSON.stringify(jsonResponse, null, 2).replace(/\\n/g, "\n");
+            responseAce.value = JSON.stringify(jsonResponse, null, 2).replace(
+              /\\n/g,
+              "\n"
+            );
           }
           // Check if response is an image
           else if (contentType && contentType.startsWith("image/")) {
