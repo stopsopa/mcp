@@ -1,7 +1,12 @@
-const { spawn } = require('child_process');
-const express = require('express');
-const bodyParser = require('body-parser');
-const path = require('path');
+import { spawn } from 'child_process';
+import express from 'express';
+import bodyParser from 'body-parser';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 3000;
