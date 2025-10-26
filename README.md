@@ -40,4 +40,6 @@ xx
 
 https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem is used as a main MCP server
 
-mcp-stdio__copy.ts is a copy of https://github.com/modelcontextprotocol/servers/blob/2025.9.25/src/filesystem/index.ts I generally fed to Claude to make it better to reason about it.
+mcp-stdio\_\_copy.ts is a copy of https://github.com/modelcontextprotocol/servers/blob/2025.9.25/src/filesystem/index.ts I generally fed to Claude to make it better to reason about it.
+
+
