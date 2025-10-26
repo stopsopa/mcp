@@ -1,5 +1,13 @@
 #!/usr/bin/env node
 
+/**
+ * node intercept.js -- node node_modules/.bin/mcp-server-filesystem . 
+ * node intercept.js -- node node_modules/.bin/mcp-server-filesystem ./files
+ * 
+ * 
+ * 
+ */
+
 import { spawn } from "child_process";
 import { appendFileSync, mkdirSync, existsSync } from "fs";
 import path from "path";
@@ -18,7 +26,9 @@ const commandArgs = process.argv.slice(separatorIndex + 1);
 const [command, ...args] = commandArgs;
 
 // Ensure ./var directory exists
-const varDir = path.join(process.cwd(), "var");
+// create deep directory but avoid using mkdirp library
+
+const varDir = path.join(process.cwd(), "var", "intercept.js");
 if (!existsSync(varDir)) {
   error(`Creating directory: ${varDir}`);
   mkdirSync(varDir, { recursive: true });
