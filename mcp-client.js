@@ -17,11 +17,15 @@ const web = path.join(__dirname);
 app.use(bodyParser.json());
 app.use(express.static(web));
 
-// Spawn the MCP server-filesystem process
+// Spawn the MCP server-filesystem process via intercept proxy
 // const proc = spawn('npx', ['@modelcontextprotocol/server-filesystem', '.'], {
-const proc = spawn("node", ["node_modules/.bin/mcp-server-filesystem", "."], {
-  stdio: ["pipe", "pipe", "pipe"],
-});
+const proc = spawn(
+  "node",
+  ["intercept.js", "--", "node", "node_modules/.bin/mcp-server-filesystem", "."],
+  {
+    stdio: ["pipe", "pipe", "pipe"],
+  }
+);
 
 if (!proc || !proc.stdout || !proc.stderr) {
   console.error("Failed to spawn MCP server process");
