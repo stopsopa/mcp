@@ -81,3 +81,6 @@
 {"method":"tools/call","params":{"name":"search_files","arguments":{"path":".","pattern":"*.json","excludePatterns":["node_modules"]}}}
 {"method":"tools/call","params":{"name":"get_file_info","arguments":{"path":"./README.md"}}}
 {"method":"tools/call","params":{"name":"list_allowed_directories","arguments":{}}}
+{"method":"tools/call","params":{"name":"read_media_file","arguments":{"path":"./files/img.jpg"}}}
+{"method":"tools/call","params":{"name":"list_directory","arguments":{"path":"."}}}
+{"method":"tools/call","params":{"name":"directory_tree","arguments":{"path":"./files"}}}
