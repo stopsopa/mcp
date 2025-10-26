@@ -4,6 +4,14 @@
 
 This is a simple Express.js based client for interacting with the Model Context Protocol (MCP) server-filesystem via JSON-RPC over stdio.
 
+## Demo
+
+https://stopsopa.github.io/mcp
+
+On github it can present example payload for requests, but there is not server powering it due to static nature of github pages.
+But can be launched locally to test responses.
+
+
 ## Features
 
 - Spawns MCP server-filesystem process
