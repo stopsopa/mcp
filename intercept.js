@@ -4,6 +4,10 @@
  * node intercept.js -- node node_modules/.bin/mcp-server-filesystem . 
  * node intercept.js -- node node_modules/.bin/mcp-server-filesystem ./files
  * 
+ * Later I have found https://github.com/modelcontextprotocol/inspector
+ *   but after I wrote this interceptor...
+ *   found it here: https://github.com/modelcontextprotocol/servers/tree/2025.9.25/src/fetch#debugging
+ *     and that I found here: https://youtu.be/oM2dXJnD80c?t=219
  * 
  * 
  */

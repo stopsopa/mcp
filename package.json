@@ -13,6 +13,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@modelcontextprotocol/inspector": "^0.17.2",
     "@modelcontextprotocol/server-filesystem": "^2025.8.21",
     "body-parser": "^2.2.0",
     "c8": "^10.1.3",
