@@ -4,15 +4,6 @@
 
 This is a simple Express.js based client for interacting with the Model Context Protocol (MCP) server-filesystem via JSON-RPC over stdio.
 
-## Demo
-
-https://stopsopa.github.io/mcp
-
-> [!WARNING]
-> On github it can present example payload for requests, but there is not server powering it due to static nature of github pages.
-> But can be launched locally to test responses.
-
-
 ## Features
 
 - Spawns MCP server-filesystem process
@@ -20,6 +11,14 @@ https://stopsopa.github.io/mcp
 - Handles request/response communication over stdio
 - Transparent JSON-RPC intercept proxy for logging all traffic
 - Request/response logging with duration metrics
+
+## Demo
+
+https://stopsopa.github.io/mcp
+
+> [!WARNING]
+> On github it can present example payloads for requests, but there is not server powering it due to static nature of github pages.
+> But server can be launched easlily locally to test responses.
 
 ## Setup
 
@@ -59,6 +58,7 @@ mcp-client.js → intercept.js → MCP filesystem server
 ```
 
 The proxy:
+
 - Intercepts all stdin/stdout traffic between client and server
 - Parses newline-delimited JSON-RPC messages
 - Matches requests to responses by ID
@@ -68,11 +68,13 @@ The proxy:
 ### Log Files
 
 Logs are stored in `./var/` directory with timestamped filenames:
+
 ```
 ./var/2025-01-26T14-30-15-log.log
 ```
 
 Each log entry includes:
+
 ```
 2025-01-26T14:30:15.123Z
 REQUEST:
@@ -113,6 +115,7 @@ node intercept.js -- <command> [args...]
 ```
 
 Example:
+
 ```bash
 node intercept.js -- node my-jsonrpc-server.js
 ```
@@ -122,5 +125,3 @@ node intercept.js -- node my-jsonrpc-server.js
 https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem is used as a main MCP server
 
 mcp-stdio\_\_copy.ts is a copy of https://github.com/modelcontextprotocol/servers/blob/2025.9.25/src/filesystem/index.ts I generally fed to Claude to make it better to reason about it.
-
-
