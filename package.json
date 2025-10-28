@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node mcp-client.js",
+    "start": "node mcp-client -- node intercept.js var/mcp-server-filesystem -- node node_modules/.bin/mcp-server-filesystem .",
     "test": "echo \"Error: no test specified\" && exit 1",
     "ln": "/bin/bash link.sh"
   },
