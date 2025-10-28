@@ -1,3 +1,9 @@
+/**
+ * Run this proxy against an MCP server process to handle JSON-RPC requests
+ *
+ * node mcp-client -- node intercept.js var/mcp-server-filesystem -- node node_modules/.bin/mcp-server-filesystem .
+ */
+
 import { spawn } from "child_process";
 import express from "express";
 import bodyParser from "body-parser";
@@ -13,6 +19,17 @@ const port = process.env.PORT || 3000;
 
 const web = path.join(__dirname);
 
+// Parse command line arguments
+const separatorIndex = process.argv.indexOf("--");
+if (separatorIndex === -1 || separatorIndex === process.argv.length - 1) {
+  error("Usage: intercept.js -- <command> [args...]");
+  error("Example: intercept.js -- node server.js");
+  process.exit(1);
+}
+
+const commandArgs = process.argv.slice(separatorIndex + 1);
+const [command, ...args] = commandArgs;
+
 // Middleware
 app.use(bodyParser.json());
 app.use(express.static(web));
@@ -20,8 +37,8 @@ app.use(express.static(web));
 // Spawn the MCP server-filesystem process via intercept proxy
 // const proc = spawn('npx', ['@modelcontextprotocol/server-filesystem', '.'], {
 const proc = spawn(
-  "node",
-  ["intercept.js", "--", "node", "node_modules/.bin/mcp-server-filesystem", "."],
+  command, // "node",
+  args, // ["intercept.js", "--", "node", "node_modules/.bin/mcp-server-filesystem", "."],
   {
     stdio: ["pipe", "pipe", "pipe"],
   }
