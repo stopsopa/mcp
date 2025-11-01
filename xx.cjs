@@ -36,6 +36,18 @@ EEE
       description: "Status of all things",
       confirm: false,
     },
+    [`mcp-client`]: {
+      command: `   
+cat <<EEE      
+node mcp-client -- node intercept.js var/mcp-server-filesystem -- node node_modules/.bin/mcp-server-filesystem .
+EEE
+
+echo -e "\\n      Press enter to continue\\n"
+read
+node mcp-client -- node intercept.js var/mcp-server-filesystem -- node node_modules/.bin/mcp-server-filesystem .
+      `,
+      confirm: false,
+    },
     [`coverage`]: {
       command: `   
 FILE="coverage/index.html"
