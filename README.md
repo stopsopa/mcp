@@ -125,3 +125,50 @@ node intercept.js -- node my-jsonrpc-server.js
 https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem is used as a main MCP server
 
 mcp-stdio\_\_copy.ts is a copy of https://github.com/modelcontextprotocol/servers/blob/2025.9.25/src/filesystem/index.ts I generally fed to Claude to make it better to reason about it.
+
+## Hint
+
+When MCP Inspector (npx @modelcontextprotocol/inspector) shows that it sent request:
+
+```json
+{
+  "method": "tools/call",
+  "params": {
+    "name": "create-user",
+    "arguments": {
+      "name": "Szymon",
+      "email": "sd@gmail.com",
+      "address": "my address",
+      "phone": "123"
+    },
+    "_meta": {
+      "progressToken": 1
+    }
+  }
+}
+```
+
+it actually sent 
+
+```json
+{
+    "jsonrpc": "2.0",
+    "id": 2,
+    "method": "tools/call",
+    "params":
+    {
+        "_meta":
+        {
+            "progressToken": 2
+        },
+        "name": "create-user",
+        "arguments":
+        {
+            "name": "Szymon",
+            "email": "sd@gmail.com",
+            "address": "my address",
+            "phone": "123"
+        }
+    }
+}
+```
