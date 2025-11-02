@@ -171,3 +171,7 @@ it actually sent
 ```
 
 ... not a big deal but we have to remember to add `"jsonrpc": "2.0"` & `"id": 2` ourselves when crafting requests manually.
+
+> [!WARNING]
+> The same when MCP Inspector shows response also it omits `"jsonrpc": "2.0"` & `"id": 2` in the response
+
