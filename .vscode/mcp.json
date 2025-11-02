@@ -1,0 +1,10 @@
+{
+  "servers": {
+    "custom-mcp": {
+      "type": "stdio",
+      "command": "/bin/bash",
+      "args": ["pass_to_inspect.sh", "vscode:mcp"]
+    }
+  },
+  "inputs": []
+}
