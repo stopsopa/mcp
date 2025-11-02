@@ -36,15 +36,38 @@ EEE
       description: "Status of all things",
       confirm: false,
     },
-    [`mcp-client`]: {
+    [`run mcp-client with intercept`]: {
       command: `   
 cat <<EEE      
-node mcp-client -- node intercept.js var/mcp-server-filesystem -- node node_modules/.bin/mcp-server-filesystem .
+node mcp-client.js -- node intercept.js var/mcp-server-filesystem -- node node_modules/.bin/mcp-server-filesystem .
+
+Runs http wrapper for MCP (node mcp-client.js)
+and that wraps 'mcp-server-filesystem' installed via npm
+
+but it doesn't run directly 'mcp-server-filesystem' MCP but first wraps it with 'intercept.js'
 EEE
 
 echo -e "\\n      Press enter to continue\\n"
 read
-node mcp-client -- node intercept.js var/mcp-server-filesystem -- node node_modules/.bin/mcp-server-filesystem .
+node mcp-client.js -- node intercept.js var/mcp-server-filesystem -- node node_modules/.bin/mcp-server-filesystem .
+      `,
+      confirm: false,
+    },
+    [`add custom MCP to VSCode`]: {
+      command: `   
+cat <<EEE      
+
+follow: https://youtu.be/ZoZxQwp1PiM?t=1352
+and use command:
+
+  /bin/bash pass_to_inspect.sh vscode:mcp
+
+to add custom MCP to VSCode
+
+that will generate what we have in .vscode/mcp.json
+
+
+EEE
       `,
       confirm: false,
     },
