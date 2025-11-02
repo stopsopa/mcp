@@ -9,7 +9,7 @@
     "ln": "/bin/bash link.sh",
     "ts:build": "tsc",
     "ts:watch": "tsc --watch",
-    "ts:dev": "tsx src/server.ts",
+    "ts:dev": "node node_modules/.bin/tsx src/server.ts",
     "ts:inspect": "/bin/bash ts:inspect.sh"
   },
   "keywords": [],
