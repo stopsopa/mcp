@@ -1,6 +1,18 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 
+import { z } from "zod";
+
+import fs from "node:fs/promises";
+
+type UserType = {
+  id?: number;
+  name: string;
+  email: string;
+  address: string;
+  phone: string;
+};
+
 /**
  * Tools - most used
  *   Is for AI to be able to use functions and do things inside the MCP ecosystem
@@ -24,11 +36,68 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
       },
     });
 
+    server.tool(
+      "create-user",
+      "Create a new user in the database",
+      {
+        name: z.string(),
+        email: z.string(),
+        address: z.string(),
+        phone: z.string(),
+      },
+      {
+        title: "Create User",
+        readOnlyHint: false,
+        destructiveHint: false,
+        idempotentHint: false,
+        openWorldHint: true,
+      },
+      async (params) => {
+        try {
+          const id = await createUser(params);
+
+          return [
+            {
+              type: "text",
+              text: `User with id: ${id} created successfully`,
+            },
+          ];
+        } catch (e) {
+          return [
+            {
+              type: "text",
+              text: "Failed to save user",
+            },
+          ];
+        }
+      }
+    );
+
+    async function createUser(params: UserType) {
+      const tmp = await import("./data/users.json", {
+        with: { type: "json" },
+      });
+
+      const users = tmp.default as UserType[];
+
+      const id = users.length + 1;
+
+      users.push({ id, ...params });
+
+      // Write the updated users back to the file
+      await fs.writeFile(
+        "./src/data/users.json",
+        JSON.stringify(users, null, 2)
+      );
+
+      return id;
+    }
     const transport = new StdioServerTransport();
-    
+
     await server.connect(transport);
   } catch (e) {
     console.error("Error starting MCP server:", e);
+
     process.exit(1);
   }
 })();
