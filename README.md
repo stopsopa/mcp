@@ -152,23 +152,22 @@ it actually sent
 
 ```json
 {
-    "jsonrpc": "2.0",
-    "id": 2,
-    "method": "tools/call",
-    "params":
-    {
-        "_meta":
-        {
-            "progressToken": 2
-        },
-        "name": "create-user",
-        "arguments":
-        {
-            "name": "Szymon",
-            "email": "sd@gmail.com",
-            "address": "my address",
-            "phone": "123"
-        }
+  "jsonrpc": "2.0",
+  "id": 2,
+  "method": "tools/call",
+  "params":{
+    "name": "create-user",
+    "arguments":{
+      "name": "Szymon",
+      "email": "sd@gmail.com",
+      "address": "my address",
+      "phone": "123"
+    },
+    "_meta": {
+      "progressToken": 1
     }
+  }
 }
 ```
+
+... not a big deal but we have to remember to add `"jsonrpc": "2.0"` & `"id": 2` ourselves when crafting requests manually.
