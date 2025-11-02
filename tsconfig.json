@@ -1,9 +1,9 @@
 {
   // 6:41
-  "compileroptions": {
+  "compilerOptions": {
     "target": "ES2022",
-    "module": "Node16",
-    "moduleResolution": "Node16",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "outDir": "./build",
     "rootDir": "./src",
     "strict": true,
