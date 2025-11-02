@@ -1,3 +1,5 @@
 
 export DANGEROUSLY_OMIT_AUTH=true
-npx @modelcontextprotocol/inspector npm run ts:dev
+export NODE_OPTIONS=""
+# npx @modelcontextprotocol/inspector npm run ts:dev
+npx @modelcontextprotocol/inspector /bin/bash pass_to_inspect.sh

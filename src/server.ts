@@ -56,19 +56,23 @@ type UserType = {
         try {
           const id = await createUser(params);
 
-          return [
-            {
-              type: "text",
-              text: `User with id: ${id} created successfully`,
-            },
-          ];
+          return {
+            content: [
+              {
+                type: "text",
+                text: `User with id: ${id} created successfully`,
+              },
+            ],
+          };
         } catch (e) {
-          return [
-            {
-              type: "text",
-              text: "Failed to save user",
-            },
-          ];
+          return {
+            content: [
+              {
+                type: "text",
+                text: "Failed to save user",
+              },
+            ],
+          };
         }
       }
     );
@@ -96,7 +100,9 @@ type UserType = {
 
     await server.connect(transport);
   } catch (e) {
-    console.error("Error starting MCP server:", e);
+    // Don't use console.error as it interferes with MCP JSON protocol
+    // Write to stderr directly or use a proper logging mechanism
+    process.stderr.write(`Error starting MCP server: ${e}\n`);
 
     process.exit(1);
   }

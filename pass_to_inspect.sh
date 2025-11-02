@@ -1,0 +1,1 @@
+node intercept.js var/ts:dev -- node node_modules/.bin/tsx src/server.ts
