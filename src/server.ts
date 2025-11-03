@@ -77,6 +77,34 @@ type UserType = {
       }
     );
 
+    server.resource(
+      "users",
+      "users://all",
+      {
+        // https://youtu.be/ZoZxQwp1PiM?t=1742  29:02
+        description: "Get all users from the database",
+        title: "Users",
+        mimeType: "application/json",
+      },
+      async (uri) => {
+        const tmp = await import("./data/users.json", {
+          with: { type: "json" },
+        });
+
+        const users = tmp.default as UserType[];
+
+        return {
+          contents: [
+            {
+              uri: uri.href,
+              text: JSON.stringify(users),
+              mimeType: "application/json",
+            },
+          ],
+        };
+      }
+    );
+
     async function createUser(params: UserType) {
       const tmp = await import("./data/users.json", {
         with: { type: "json" },
